@@ -1,9 +1,6 @@
 # Dependencies
 node_modules/
 
-# Generated screenshots
-screenshots/
-
 # Encrypted/sensitive output
 encrypted/
 
