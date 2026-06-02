@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kendo UI Feasibility Assessment — AuditComply Template Builder</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .site-nav { background:#071e27; padding:10px 24px; display:flex; align-items:center; gap:12px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:13px; }
+    .nav-link { color:rgba(255,255,255,0.6); text-decoration:none; transition:color 0.15s; }
+    .nav-link:hover { color:#2bafd3; }
+    .nav-link.active { color:#2bafd3; font-weight:600; }
+    .nav-divider { color:rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────── -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-link active">← POC: Template Builder</a>
+  <span class="nav-divider">|</span>
+  <a href="case-study.html" class="nav-link">Written Assessment →</a>
+</nav>
+
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<header>
+  <p class="eyebrow">Proof of Concept &mdash; Internal Review</p>
+  <h1>Kendo UI Feasibility Assessment<br>AuditComply Template Builder</h1>
+  <p class="subtitle">
+    Can Kendo UI for React replicate the AuditComply template builder interface
+    to a production standard? This report presents the evidence.
+  </p>
+</header>
+
+<!-- ── Executive summary ──────────────────────────────────────── -->
+<section id="summary">
+  <div class="container">
+    <p class="section-label">Finding</p>
+    <h2>Kendo is not a practical fit for this interface</h2>
+    <p class="section-intro">
+      A structured proof-of-concept was built across four progressive versions,
+      each pushing Kendo's customisation further. The conclusion is consistent at every level.
+    </p>
+    <div class="summary-box">
+      Kendo UI components render <strong>fundamentally different HTML</strong> to what the
+      AuditComply design system was built to target. The portal's own compiled CSS —
+      the ground truth for how this interface should look — cannot reach Kendo's internal
+      elements without <strong>16 <code>!important</code> overrides on Kendo's internal class names</strong>.
+      At the point where a like-for-like result is achieved, Kendo accounts for just
+      <strong>20% of the implementation</strong>, all of it carrying ongoing upgrade risk.
+      The existing AuditComply design system already contains everything needed to style this interface correctly.
+    </div>
+  </div>
+</section>
+
+<!-- ── Target reference ───────────────────────────────────────── -->
+<section id="target">
+  <div class="container">
+    <p class="section-label">The Target</p>
+    <h2>What the interface must look like</h2>
+    <p class="section-intro">
+      Recreated from the portal's compiled CSS (<code>template-builder1_5.css</code>) and
+      the actual Django template HTML. Every measurement, colour and icon is sourced directly
+      from the portal's SCSS files. This is the benchmark each version is compared against.
+    </p>
+    <div class="target-wrap">
+      <div class="screenshot-frame">
+        <img src="screenshots/reference.png" alt="Target UI — AuditComply template builder" loading="lazy" />
+      </div>
+      <p class="screenshot-caption">
+        Target: section header with 120px stripe, requirement cards with attribute rows,
+        Select2 dropdowns, build-toggle switches, and mandatory columns.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Progression ────────────────────────────────────────────── -->
+<section id="versions">
+  <div class="container">
+    <p class="section-label">The Evidence</p>
+    <h2>Four versions of progressive effort</h2>
+    <p class="section-intro">
+      Each version adds one layer of Kendo customisation. The banner in each screenshot shows
+      the live metrics: Kendo usage, custom CSS lines, <code>!important</code> count, and visual match.
+    </p>
+
+    <div class="versions">
+
+      <!-- V1 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-badge">V1</span>
+          <span class="version-title">Pure Kendo &mdash; Zero Customisation</span>
+        </div>
+        <p class="version-desc">
+          All 11 planned Kendo components wired together using the Kendo Default theme.
+          No custom CSS, no overrides, no wrappers.
+        </p>
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Kendo usage</span><span class="stat-value green">100%</span></div>
+          <div class="stat"><span class="stat-label">Custom CSS</span><span class="stat-value">0 lines</span></div>
+          <div class="stat"><span class="stat-label">!important</span><span class="stat-value">0</span></div>
+          <div class="stat"><span class="stat-label">Visual match</span><span class="stat-value red">~10%</span></div>
+          <div class="stat"><span class="stat-label">Cumulative effort</span><span class="stat-value">0.5 days</span></div>
+        </div>
+        <div class="screenshot-frame">
+          <img src="screenshots/v1.png" alt="V1 — Pure Kendo" loading="lazy" />
+        </div>
+        <div class="finding">
+          <strong>Gap:</strong> Section header is a generic chevron accordion. Requirement cards have no identifier badge or structured attribute rows.
+          Toggles are Kendo's default 28px pill. Dropdowns are Kendo-styled, not Select2. Drag handles have no visual representation.
+          Kendo provides 100% of the code but only ~10% of the visual result.
+        </div>
+      </div>
+
+      <!-- V2 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-badge">V2</span>
+          <span class="version-title">Theme Variable Overrides</span>
+        </div>
+        <p class="version-desc">
+          Brand colours applied via Kendo's CSS custom property system (<code>--kendo-color-primary</code>,
+          font family, border radius). No structural changes.
+        </p>
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Kendo usage</span><span class="stat-value green">90%</span></div>
+          <div class="stat"><span class="stat-label">Custom CSS</span><span class="stat-value">~61 lines</span></div>
+          <div class="stat"><span class="stat-label">!important</span><span class="stat-value">0</span></div>
+          <div class="stat"><span class="stat-label">Visual match</span><span class="stat-value red">~25%</span></div>
+          <div class="stat"><span class="stat-label">Cumulative effort</span><span class="stat-value">1 day</span></div>
+        </div>
+        <div class="screenshot-frame">
+          <img src="screenshots/v2.png" alt="V2 — Theme Variable Overrides" loading="lazy" />
+        </div>
+        <div class="finding">
+          <strong>Gap:</strong> Brand colours are applied — that is the full extent of what CSS variables can achieve.
+          The section stripe, toggle track shape, Select2 layout, and attribute row structure all require
+          markup changes that Kendo's variable system cannot make.
+        </div>
+      </div>
+
+      <!-- V3 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-badge">V3</span>
+          <span class="version-title">Best-Effort Kendo &mdash; Natural Stopping Point</span>
+        </div>
+        <p class="version-desc">
+          Brand tokens applied, section header approximated via <code>ExpansionPanel</code>'s <code>title</code> prop,
+          modest CSS overrides for the most obvious mismatches. This is what a competent developer
+          would produce after 2&ndash;3 days of genuine Kendo customisation work.
+        </p>
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Kendo usage</span><span class="stat-value amber">40%</span></div>
+          <div class="stat"><span class="stat-label">Custom CSS</span><span class="stat-value">~188 lines CSS + ~300 lines JSX</span></div>
+          <div class="stat"><span class="stat-label">!important</span><span class="stat-value amber">5</span></div>
+          <div class="stat"><span class="stat-label">Visual match</span><span class="stat-value amber">~50%</span></div>
+          <div class="stat"><span class="stat-label">Cumulative effort</span><span class="stat-value">3 days</span></div>
+        </div>
+        <div class="screenshot-frame">
+          <img src="screenshots/v3.png" alt="V3 — Best-Effort Kendo" loading="lazy" />
+        </div>
+        <div class="finding">
+          <strong>This is where a developer would stop and raise a concern.</strong> The visual output is
+          recognisably Kendo, not recognisably the portal. Closing the remaining gap —
+          the 120px section stripe, the 10px toggle track, the Select2 layout, the 55&times;55px icon buttons —
+          requires moving from "customising Kendo" to "writing custom code that wraps Kendo."
+        </div>
+      </div>
+
+      <!-- V4 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-badge">V4</span>
+          <span class="version-title">Like-for-Like &mdash; Maximum Kendo Result</span>
+        </div>
+        <p class="version-desc">
+          The portal's own compiled CSS is loaded alongside Kendo. Kendo components handle interactive
+          behaviour (drag-and-drop, toggle state, dropdown state). The portal CSS
+          handles all structural styling. A separate <code>kendo-overrides.css</code> file compensates
+          for where Kendo's HTML conflicts with the portal's CSS selectors.
+        </p>
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Kendo usage</span><span class="stat-value red">25%</span></div>
+          <div class="stat"><span class="stat-label">Custom CSS</span><span class="stat-value amber">~130 lines overrides</span></div>
+          <div class="stat"><span class="stat-label">!important on Kendo</span><span class="stat-value red">16</span></div>
+          <div class="stat"><span class="stat-label">Visual match</span><span class="stat-value green">~90%</span></div>
+          <div class="stat"><span class="stat-label">Cumulative effort</span><span class="stat-value">11 days</span></div>
+        </div>
+        <div class="screenshot-frame">
+          <img src="screenshots/v4.png" alt="V4 — Like-for-Like with Kendo" loading="lazy" />
+        </div>
+        <div class="finding">
+          <strong>The decisive finding:</strong> To reach ~90% visual match, 80% of the work is done by the portal's
+          own CSS — not Kendo. The 6 remaining Kendo components (Sortable, Switch, Checkbox, DropDownList, MultiSelect, Button) still
+          require 16 <code>!important</code> overrides on Kendo's internal class names because Kendo's HTML does not
+          match what the portal CSS targets. Every Kendo minor release risks silently breaking these overrides.
+          Two further planned Kendo components were replaced with custom implementations during development.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Verdict table ──────────────────────────────────────────── -->
+<section id="verdict">
+  <div class="container">
+    <p class="section-label">Summary</p>
+    <h2>Effort comparison across all versions</h2>
+    <p class="section-intro">
+      The Kendo usage column is the key metric. As visual match improves, Kendo's share of the
+      implementation shrinks — ending at 20% in the like-for-like version.
+    </p>
+    <div class="verdict-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>CSS basis</th>
+            <th>Kendo usage</th>
+            <th>!important on Kendo</th>
+            <th>Extra CSS beyond Kendo</th>
+            <th>Effort</th>
+            <th>Visual match</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>V1 — Pure Kendo</td>
+            <td>Kendo Default theme</td>
+            <td class="num-green">100%</td>
+            <td>0</td>
+            <td>0 lines</td>
+            <td>0.5 days</td>
+            <td>~10%</td>
+          </tr>
+          <tr>
+            <td>V2 — Theme vars</td>
+            <td>Kendo Default + CSS variables</td>
+            <td class="num-green">90%</td>
+            <td>0</td>
+            <td>~61 lines</td>
+            <td>1 day</td>
+            <td>~25%</td>
+          </tr>
+          <tr class="highlight-warn">
+            <td>V3 — Best-effort Kendo</td>
+            <td>Kendo Default + brand overrides</td>
+            <td class="num-amber">40%</td>
+            <td class="num-amber">5</td>
+            <td>~188 lines CSS + ~300 lines JSX</td>
+            <td>3 days</td>
+            <td>~50%</td>
+          </tr>
+          <tr class="highlight-bad">
+            <td>V4 — Like-for-like (Kendo)</td>
+            <td>Portal CSS + Kendo + kendo-overrides.css</td>
+            <td class="num-red">25%</td>
+            <td class="num-red">16</td>
+            <td>~130 lines (Kendo-specific)</td>
+            <td>11 days</td>
+            <td>~90%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── Conclusion ─────────────────────────────────────────────── -->
+<section id="conclusion">
+  <div class="container">
+    <p class="section-label">Recommendation</p>
+    <h2>Conclusion</h2>
+    <p class="section-intro">Based on the evidence across all four versions.</p>
+    <div class="conclusion-box">
+      <h3>Kendo UI is not a practical fit for the template builder interface</h3>
+      <p>
+        Kendo UI for React provides real value for <strong>data-heavy, grid-centric interfaces</strong>
+        where its default component structure aligns with the target design — data tables, charts,
+        schedulers. For an interface with an <strong>established custom design system</strong> like the
+        AuditComply template builder, it works against the existing design system.
+      </p>
+      <p>
+        The portal's compiled CSS is the ground truth for how this interface must look.
+        Any approach that renders HTML matching its selectors requires zero additional overrides.
+        Kendo cannot replicate the portal's design without overriding its own internal component structure —
+        its components output <code>.k-switch-track</code>, <code>.k-dropdownlist</code>, and <code>.k-item</code>
+        wrappers that require <strong>12 <code>!important</code> overrides</strong> tied to Kendo's internal
+        class names, each one a silent failure risk on Kendo upgrades.
+      </p>
+      <p>
+        At the like-for-like stage, <strong>Kendo accounts for 20% of the implementation</strong>
+        and introduces commercial licensing costs, a cascade of undocumented peer dependencies,
+        and ongoing maintenance risk. The 80% doing the real work is the portal's own CSS.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>AuditComply &mdash; Kendo UI Feasibility POC &mdash; Internal Review Only</p>
+</footer>
+
+</body>
+</html>
