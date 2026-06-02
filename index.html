@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="cache-control" content="no-cache"/>
   <meta http-equiv="pragma" content="no-cache"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -20,7 +21,7 @@
       -webkit-font-smoothing:antialiased;overscroll-behavior:none;
       overflow:hidden;height:100vh}
     body.unlocked{overflow:auto;height:auto}
-    .cover{background:var(--navy);color:white;min-height:100vh;
+    .cover{background:var(--navy);color:white;min-height:100vh;position:relative;overflow:hidden;
       display:flex;align-items:center;padding:72px 80px;gap:80px;
       border-bottom:4px solid var(--teal)}
     .cover-left{flex:0 0 45%;min-width:0}
@@ -49,6 +50,9 @@
     .login-error.visible{display:block}
     #doc-content{display:none;opacity:0;transition:opacity .5s ease-in}
     #doc-content.visible{opacity:1}
+    .cover-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      height:50vh;opacity:0.04;pointer-events:none}
+    .cover-watermark svg{height:100%;width:auto}
     @media(max-width:760px){
       .cover{flex-direction:column;padding:48px 28px;gap:40px}
       #login-panel{width:100%}
@@ -58,6 +62,12 @@
 <body>
 
 <div class="cover">
+  <div class="cover-watermark">
+    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 233 56">
+      <defs><style>.st0{fill:#fff;fill-rule:evenodd}</style></defs>
+      <path class="st0" d="M54.44,2.94l9.98,3.99v35.94c0,7.73-9.54,9.06-15.98,9.98,3.68-.92,6-1.94,6-9.98V10.92l-9.98-3.99,9.98-3.99ZM12.51,50.88v-21.97c0-2.21,1.67-4.7,3.68-5.59l10.32-4.43v13.97l9.98,6c2.01,1.02,6,1.06,6-2.01v-6l-3.99-2.01V.93L8.01,12.14C3.85,13.68.51,18.48.51,22.91v32.94l11.99-4.97Z"/>
+    </svg>
+  </div>
   <div class="cover-left">
     <p class="eyebrow">Written Evaluation &mdash; Internal Review</p>
     <h1>Kendo UI Evaluation<br>Project Spark</h1>
